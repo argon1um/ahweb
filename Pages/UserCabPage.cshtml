@@ -1,0 +1,144 @@
+﻿@page
+@model ah4cClientApp.Pages.UserCabPageModel
+@{
+    var isdisplay = "none";
+    if (ViewData["showerror"] != null && ViewData["showerror"] as string == "true" && ViewData["showsuccess"] == null)
+    {
+        isdisplay = "block";
+    }
+    else if (ViewData["showsuccess"] != null && ViewData["showsuccess"] as string == "true")
+    {
+        isdisplay = "block";
+    }
+}
+<link rel="stylesheet" href="./css/site.css" />
+
+
+<div class="page">
+    <div class="banner">
+        <div class="banner-content">
+            <div class="banner-title">Григорьев И.М</div>
+            <div class="banner-description">Информация о вашем аккаунте</div>
+        </div>
+
+    </div>
+    <div class="mainsection">
+        <div class="avatar">
+            <image class="cabinet-avatar" src="assets/medicinepet-10.png" />
+        </div>
+        <div class="container2">
+            <div class="page-maintitle" name="maintitlename"> </div>
+            <div class="selection">
+                <div class="label-normal">
+                    <div class="label-text">Григорьев16</div>
+                </div>
+            </div>
+            <div class="selection">
+                <div class="label-normal">
+                    <div class="label-text">**************</div>
+                </div>
+                <div class="primary">
+                    <div class="title4">👁</div>
+                </div>
+            </div>
+            <div class="selection">
+                <div class="primary2">
+                    <form>
+                        <div class="title4">Сохранить</div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="seconday">
+            <form action="/index">
+                <button class="usercab-button">Выйти из аккаунта</button>
+            </form>
+            <form>
+                <p></p>
+                <button class="usercab-button">Изменить фото</button>
+            </form>
+        </div>
+        <svg class="usercab-userinformaion"</svg>
+    </div>
+    <div class="section3">
+        <div class="container3">
+            <div class="title5">История заявок</div>
+            <div class="description2">Вы обращались к нам 2 раза</div>
+            <div class="list">
+                <div class="item">
+                    <div class="frame">
+                        <div class="icon">💸</div>
+                    </div>
+                    <div class="frame-427318906">
+                        <div class="title6">Заявка</div>
+                    </div>
+                    <div class="subtitle">Дата начала передержки: 07.11.23</div>
+                    <div class="subtitle">Дата окончания передержки: 27.11.23</div>
+                    <svg class="vector-2003"
+                         width="906"
+                         height="2"
+                         viewBox="0 0 906 2"
+                         fill="none"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0 1H906" stroke="black" stroke-opacity="0.1" />
+                    </svg>
+                </div>
+            </div>
+            <div class="list">
+                <div class="item">
+                    <div class="frame">
+                        <div class="icon">💸</div>
+                    </div>
+                    <div class="frame-427318906">
+                        <div class="title6">Заявка</div>
+                    </div>
+                    <div class="subtitle">Дата начала передержки: 13.08.23</div>
+                    <div class="subtitle">Дата окончания передержки: 03.09.23</div>
+                    <svg class="vector-2004"
+                         width="906"
+                         height="2"
+                         viewBox="0 0 906 2"
+                         fill="none"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0 1H906" stroke="black" stroke-opacity="0.1" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+        <div class="container4">
+            <div class="title5">Неоплаченные заявки</div>
+            <div class="description2">
+                У вас есть 1 неоплаченная заявка на проживание питомца
+            </div>
+            <div class="list">
+                <div class="item">
+                    <div class="frame">
+                        <div class="icon">💸</div>
+                    </div>
+                    <div class="frame-427318906">
+                        <div class="title6">Квитанция</div>
+                    </div>
+                    <div class="subtitle">Дата начала передержки: 07.11.23</div>
+                    <div class="subtitle">Дата окончания передержки: 27.11.23</div>
+                    <svg class="vector-2005"
+                         width="924"
+                         height="2"
+                         viewBox="0 0 924 2"
+                         fill="none"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0 1H924" stroke="black" stroke-opacity="0.1" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+        <svg class="vector-2006"
+             width="1920"
+             height="1"
+             viewBox="0 0 1920 1"
+             fill="none"
+             xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 1H1920" stroke="black" stroke-opacity="0.1" />
+        </svg>
+    </div>
+</div>
+
