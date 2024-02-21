@@ -1,16 +1,19 @@
+using ah4cClientApp.DTO;
 using ah4cClientApp.Pages.Shared;
 using ah4cClientApp.Services;
+using AnimalHouseRestAPI.Models;
 using AnimalHouseRestAPI.ModelsDTO;
+using AutoMapper;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Newtonsoft.Json;
+using NuGet.Protocol;
 
 namespace ah4cClientApp.Pages
 {
     public class AuthPageModel : PageModel
     {
-
-        
         public static string userforform;
         public static string passwordforform;
         private readonly ILogger<IndexModel> _logger;
@@ -18,7 +21,7 @@ namespace ah4cClientApp.Pages
         AuthService auth = new AuthService();
 
 
-        public IActionResult OnPost(string username, string password)
+        public async Task<ActionResult> OnPost(string username, string password)
         {
             string address = "http://localhost:8081/";
             username = Request.Form["username"];
@@ -62,6 +65,9 @@ namespace ah4cClientApp.Pages
 
                 ClientDTO clientDTO = new ClientDTO(username, password);
                 var response = new HttpClient().PostAsJsonAsync(address + "clients/log", clientDTO).Result;
+                var client = JsonConvert.DeserializeObject(response.Content.ReadAsStringAsync().Result);
+                
+                UserCabPageModel.user = (ClientResponseLogin)client;
                 if (response.IsSuccessStatusCode)
                 {
                     IndexModel.check = true;
@@ -69,6 +75,8 @@ namespace ah4cClientApp.Pages
                 }
                 else
                 {
+                    
+
                     var showerror4 = true;
                     if (showerror4)
                     {

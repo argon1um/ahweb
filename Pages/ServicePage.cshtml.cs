@@ -13,7 +13,7 @@ namespace ah4cClientApp.Pages
         
         public void OnGet()
         {
-            var response = new HttpClient().GetStringAsync("localhost:8081/services/alllist").Result;
+            var response = new HttpClient().GetStringAsync("http://localhost:8081/services/alllist").Result;
             services = JsonConvert.DeserializeObject<List<Service>>(response);
         }
     }

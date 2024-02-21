@@ -1,6 +1,8 @@
 ﻿@page
 @model ah4cClientApp.Pages.UserCabPageModel
 @{
+
+
     var isdisplay = "none";
     if (ViewData["showerror"] != null && ViewData["showerror"] as string == "true" && ViewData["showsuccess"] == null)
     {
@@ -17,7 +19,7 @@
 <div class="page">
     <div class="banner">
         <div class="banner-content">
-            <div class="banner-title">Григорьев И.М</div>
+            <div class="banner-title"></div>
             <div class="banner-description">Информация о вашем аккаунте</div>
         </div>
 
@@ -27,18 +29,20 @@
             <image class="cabinet-avatar" src="assets/medicinepet-10.png" />
         </div>
         <div class="container2">
-            <div class="page-maintitle" name="maintitlename"> </div>
+            <div class="page-maintitle" name="maintitlename">@UserCabPageModel.user.ClientName </div>
             <div class="selection">
                 <div class="label-normal">
-                    <div class="label-text">Григорьев16</div>
+                    <div class="label-text">@UserCabPageModel.user.ClientLogin</div>
                 </div>
             </div>
             <div class="selection">
                 <div class="label-normal">
-                    <div class="label-text">**************</div>
+                    <div class="label-text">@UserCabPageModel.user.ClientPassword</div>
                 </div>
                 <div class="primary">
-                    <div class="title4">👁</div>
+                    <form method="post">
+                        <button class="title4">👁</button>
+                    </form>
                 </div>
             </div>
             <div class="selection">
@@ -50,8 +54,8 @@
             </div>
         </div>
         <div class="seconday">
-            <form action="/index">
-                <button class="usercab-button">Выйти из аккаунта</button>
+            <form method="post">
+                <button name="accoutbutton" class="usercab-button">Выйти из аккаунта</button>
             </form>
             <form>
                 <p></p>

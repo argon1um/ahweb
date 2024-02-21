@@ -1,7 +1,8 @@
 ﻿@page
+@using AnimalHouseRestAPI.Models
 @model ah4cClientApp.Pages.BookingPageModel
 @{
-
+    
 
 }
 <div class="banner">
@@ -18,24 +19,42 @@
 <div class="mainsection2">
 
     <div class="card-oriientation">
-        <div class="card">
-            <div class="image-container">
-                <div class="image">
-                    <a href="#">
-                        <img src="/assets/smallroom.jpg" />
-                    </a>
+        @foreach (Room room in BookingPageModel.rooms)
+        {
+            var imagepath = room.RoomImage;
+            <div class="card">
+                <div class="image-container">
+                    <div class="image">
+                        <a href="#">
+                            @if (@room.RoomImage == "largeroom")
+                            {
+
+                                <img src = "/assets/largeroom.jpg" />
+                            }
+                            @if (@room.RoomImage == "mediumroom")
+                            {
+
+                                <img src = "/assets/mediumroom.jpg" />
+                            }
+                            @if (@room.RoomImage == "smallroom")
+                            {
+
+                                <img src="/assets/smallroom.jpg" />
+                            }
+                        </a>
+                    </div>
+                </div>
+                <div class="card-text">
+                    <div class="card-title">@room.RoomDescription</div>
+                    <div class="icon-buttons">
+                        <div class="icon">🐶</div>
+                        <div class="icon">🐱</div>
+                    </div>
                 </div>
             </div>
-            <div class="card-text">
-                <div class="card-title">Номер для 1 питомца</div>
-                <div class="subtitle">200₽\сутки</div>
-                <div class="icon-buttons">
-                    <div class="icon">🐶</div>
-                    <div class="icon">🐱</div>
-                </div>
-            </div>
-        </div>
-        <div class="card">
+        }
+
+@*         <div class="card">
             <div class="image-container">
                 <div class="image">
                     <a href="#">
@@ -68,7 +87,7 @@
                     <div class="icon">🐱</div>
                 </div>
             </div>
-        </div>
+        </div> *@
     </div>
 </div>
     

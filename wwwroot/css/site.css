@@ -167,13 +167,13 @@
     width: auto;
 }
 
-div.scrollmenu {
+.card.scrollmenu {
   background-color: #333;
   overflow: auto;
   white-space: nowrap;
 }
 
-div.scrollmenu a {
+.card.scrollmenu a {
   display: inline-block;
   color: white;
   text-align: center;
@@ -181,7 +181,7 @@ div.scrollmenu a {
   text-decoration: none;
 }
 
-div.scrollmenu a:hover {
+.card.scrollmenu a:hover {
   background-color: #777;
 }
 .card {
@@ -405,8 +405,8 @@ div.scrollmenu a:hover {
 
 .cabinet-avatar {
     overflow: hidden;
-    max-width: 350px;
-    max-height: 350px;
+    width: 450;
+    height: 337;
 }
 
 
