@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AHRestAPI.Models;
+using System;
 using System.Collections.Generic;
 
 namespace AnimalHouseRestAPI.Models;

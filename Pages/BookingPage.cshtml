@@ -14,82 +14,41 @@
     </div>
 
 </div>
-<div class="page-maintitle">Номера для питомцев</div>
-
-<div class="mainsection2">
-
-    <div class="card-oriientation">
-        @foreach (Room room in BookingPageModel.rooms)
-        {
-            var imagepath = room.RoomImage;
-            <div class="card">
-                <div class="image-container">
-                    <div class="image">
-                        <a href="#">
-                            @if (@room.RoomImage == "largeroom")
-                            {
-
-                                <img src = "/assets/largeroom.jpg" />
-                            }
-                            @if (@room.RoomImage == "mediumroom")
-                            {
-
-                                <img src = "/assets/mediumroom.jpg" />
-                            }
-                            @if (@room.RoomImage == "smallroom")
-                            {
-
-                                <img src="/assets/smallroom.jpg" />
-                            }
-                        </a>
-                    </div>
-                </div>
-                <div class="card-text">
-                    <div class="card-title">@room.RoomDescription</div>
-                    <div class="icon-buttons">
-                        <div class="icon">🐶</div>
-                        <div class="icon">🐱</div>
-                    </div>
-                </div>
-            </div>
-        }
-
-@*         <div class="card">
+<h2 class="page-maintitle">Номера для питомцев</h2>
+<div class="card-oriientation">
+    @foreach (Room room in BookingPageModel.rooms)
+    {
+        var imagepath = room.RoomImage;
+        <div class="roomcard">
             <div class="image-container">
                 <div class="image">
                     <a href="#">
-                        <img src="/assets/mediumroom.jpg" />
+                        @if (@room.RoomImage == "largeroom")
+                        {
+
+                            <img src = "/assets/largeroom.jpg" />
+                        }
+                        @if (@room.RoomImage == "mediumroom")
+                        {
+
+                            <img src = "/assets/mediumroom.jpg" />
+                        }
+                        @if (@room.RoomImage == "smallroom")
+                        {
+
+                            <img src="/assets/smallroom.jpg" />
+                        }
                     </a>
                 </div>
             </div>
             <div class="card-text">
-                <div class="card-title">Номер для 2 питомцев</div>
-                <div class="subtitle">250₽\сутки</div>
+                <div class="card-title">@room.RoomDescription</div>
                 <div class="icon-buttons">
                     <div class="icon">🐶</div>
                     <div class="icon">🐱</div>
                 </div>
+                <div class="icon">@room.RoomStatus</div>
             </div>
         </div>
-        <div class="card">
-            <div class="image-container">
-                <div class="image">
-                    <a href="#">
-                        <img src="/assets/largeroom.jpg" />
-                    </a>
-                </div>
-            </div>
-            <div class="card-text">
-                <div class="card-title">Номер для 3 питомцев</div>
-                <div class="subtitle">350₽\сутки</div>
-                <div class="icon-buttons">
-                    <div class="icon">🐶</div>
-                    <div class="icon">🐱</div>
-                </div>
-            </div>
-        </div> *@
-    </div>
+    }
 </div>
-    
-    
-

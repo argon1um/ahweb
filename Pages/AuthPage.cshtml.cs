@@ -67,7 +67,7 @@ namespace ah4cClientApp.Pages
                 var response = new HttpClient().PostAsJsonAsync(address + "clients/log", clientDTO).Result;
                 var client = JsonConvert.DeserializeObject(response.Content.ReadAsStringAsync().Result);
                 
-                UserCabPageModel.user = (ClientResponseLogin)client;
+                
                 if (response.IsSuccessStatusCode)
                 {
                     IndexModel.check = true;

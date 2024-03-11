@@ -12,7 +12,7 @@ namespace ah4cClientApp.Pages
     public class RegistrationPageModel : PageModel
     {
         private static JsonSerializerSettings mainsettings = new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore};
-        public static string address = "http://localhost:8080/";
+        public static string address = "http://localhost:8081/";
         public IActionResult OnPost()
         {
             var showerror = false;
@@ -43,7 +43,7 @@ namespace ah4cClientApp.Pages
                     newclient.ClientEmail = clientemail;
                     newclient.ClientPhone = result;
 
-                    var response = new HttpClient().PostAsJsonAsync(address + "clients/auth/reg", newclient).Result;
+                    var response = new HttpClient().PostAsJsonAsync(address + "clients/reg", newclient).Result;
                     if (response.IsSuccessStatusCode)
                     {
                         return RedirectToPage("Index");

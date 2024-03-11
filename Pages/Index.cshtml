@@ -1,4 +1,5 @@
 ﻿@page
+@using AnimalHouseRestAPI.Models
 @model ah4cClientApp.Pages.IndexModel
 @{
 }
@@ -14,42 +15,48 @@
 
     </div>
     <div class="page-maintitle">Наши услуги</div>
-    <div class="mainsection">
-        <div class="card-oriientation">
-            <div class="card">
-                <div class="image-container">
-                    <div class="image">
-                        <a href="#">
-                            <img src="/assets/idei-dlya-fotosessii-s-sobakoy-10.png" />
-                        </a>
+    <div class="roomwrapper">
+    <div class="card-orientation">
+            @foreach (Service service in IndexModel.services)
+            {
+                
+                <div class="card">
+                    <div class="image-container">
+                        <div class="image">
+                                @if (service.Serviceimage == "photosession")
+                                {
+
+                                    <img src="/assets/photosession.png" />
+                                }
+
+                                @if (service.Serviceimage == "medicine")
+                                {
+
+                                    <img src="/assets/medicine.png" />
+                                }
+
+                                @if (service.Serviceimage == "bookingplus")
+                                {
+
+                                    <img src="/assets/bookingplus.jpg" />
+                                }
+                                @if (service.Serviceimage == null)
+                                {
+                                    <img src="/assets/defaultimage.png" />                               
+                                }
+
+                        </div>
+                    </div>
+                    <div class="card-text">
+                        <div class="card-title">@service.ServiceDescription</div>
+                        <div class="icon-buttons">
+                            <div class="icon">🐶</div>
+                            <div class="icon">🐱</div>
+                            <label class="price">@service.ServicePrice/сутки</label>
+                        </div>
                     </div>
                 </div>
-                <div class="card-text">
-                    <div class="card-title">Фотосессия</div>
-                    <div class="subtitle">500₽\2 часа</div>
-                    <div class="icon-buttons">
-                        <div class="icon">🐶</div>
-                        <div class="icon">🐱</div>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="image-container">
-                    <div class="image">
-                        <a href="#">
-                            <img src="/assets/medicinepet-10.png" />
-                        </a>
-                    </div>
-                </div>
-                <div class="card-text">
-                    <div class="card-title">Лечение и уход</div>
-                    <div class="subtitle">150₽\сутки</div>
-                    <div class="icon-buttons">
-                        <div class="icon">🐶</div>
-                        <div class="icon">🐱</div>
-                    </div>
-                </div>
-            </div>
+            }
         </div>
     </div>
 </div>

@@ -8,9 +8,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\assets\bookingplus.jpg" />
+    <Content Remove="wwwroot\assets\defaultimage.png" />
     <Content Remove="wwwroot\assets\iconimage.jpg" />
     <Content Remove="wwwroot\assets\idei-dlya-fotosessii-s-sobakoy-10.png" />
+    <Content Remove="wwwroot\assets\largeroom.jpg" />
+    <Content Remove="wwwroot\assets\medicine.png" />
     <Content Remove="wwwroot\assets\medicinepet-10.png" />
+    <Content Remove="wwwroot\assets\mediumroom.jpg" />
+    <Content Remove="wwwroot\assets\photosession.png" />
+    <Content Remove="wwwroot\assets\smallroom.jpg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,9 +33,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="wwwroot\assets\bookingplus.jpg" />
+    <Resource Include="wwwroot\assets\defaultimage.png" />
     <Resource Include="wwwroot\assets\iconimage.jpg" />
-    <Resource Include="wwwroot\assets\idei-dlya-fotosessii-s-sobakoy-10.png" />
-    <Resource Include="wwwroot\assets\medicinepet-10.png" />
+    <Resource Include="wwwroot\assets\largeroom.jpg" />
+    <Resource Include="wwwroot\assets\medicine.png" />
+    <Resource Include="wwwroot\assets\mediumroom.jpg" />
+    <Resource Include="wwwroot\assets\photosession.png" />
+    <Resource Include="wwwroot\assets\smallroom.jpg" />
   </ItemGroup>
 
 </Project>

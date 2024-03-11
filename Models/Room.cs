@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace AnimalHouseRestAPI.Models;
+namespace AHRestAPI.Models;
 
 public partial class Room
 {

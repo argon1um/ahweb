@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace AnimalHouseRestAPI.Models;
+namespace AHRestAPI.Models;
 
 public partial class Service
 {
@@ -14,6 +14,8 @@ public partial class Service
     public string? ServiceDescription { get; set; }
 
     public double? ServicePrice { get; set; }
+
+    public string? Serviceimage { get; set; }
 
     public virtual Servicecategory? ServiceCateg { get; set; }
 }

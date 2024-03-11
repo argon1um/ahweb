@@ -22,28 +22,6 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <style>
-        a,
-        button,
-        input,
-        select,
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            border: none;
-            text-decoration: none;
-            appearance: none;
-            background: none;
-            -webkit-font-smoothing: antialiased;
-        }
-    </style>
     <title>Document</title>
 </head>
 <body>
@@ -55,10 +33,18 @@
                     <input type="text" class="title2" id="username" name="username">
                     <div class="textfield"></div>
                     <h4 class="title">Пароль</h4>
-                    <input type="password" class="textfield" id="password" name="password">
+                    <input type="password" class="textfield" id="password" class="defaulttextbox" name="password">
                     <div class="button">
                         <div class="primary">
-                            <button class="button">Войти</button>
+                            <button class="usercab-button">Войти</button>
+                        </div>
+
+                    </div>
+                </form>
+                <form action="/RegistrationPage">
+                    <div class="button">
+                        <div class="primary">
+                            <button class="usercab-button">Зарегистрироваться</button>
                         </div>
                     </div>
                 </form>
