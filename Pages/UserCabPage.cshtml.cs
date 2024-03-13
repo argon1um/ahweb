@@ -9,7 +9,7 @@ namespace ah4cClientApp.Pages
     
     public class UserCabPageModel : PageModel
     {
-        public static Client user = new Client();
+        public static Client user = AuthPageModel.client;
         public void OnGet()
         {
 

@@ -11,17 +11,15 @@ namespace ah4cClientApp.Pages
     {
         private static JsonSerializerSettings mainsettings = new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
         public static string address = "http://localhost:8081/";
-        public IActionResult OnPost()
+        public IActionResult OnPost(int roomid)
         {
             var showerror = false;
-            string strClientid = Request.Form["clientId"];
+            string strClientName = Request.Form["clientName"];
             string strRoomid = Request.Form["roomId"];
-            string strWorkerid = Request.Form["workerId"];
             string strAdmDate = Request.Form["admissionDate"];
             string strAnimalid = Request.Form["animalId"];
             string strIssueDate = Request.Form["issueDate"];
-            string strorderStatusId = Request.Form["orderStatusId"];
-            if (string.IsNullOrEmpty(strClientid) || string.IsNullOrEmpty(strRoomid) || string.IsNullOrEmpty(strWorkerid) || string.IsNullOrEmpty(strAdmDate) || string.IsNullOrEmpty(strIssueDate) && string.IsNullOrEmpty(strorderStatusId) || string.IsNullOrEmpty(strAnimalid))
+            if (string.IsNullOrEmpty(strClientName) || string.IsNullOrEmpty(strRoomid)|| string.IsNullOrEmpty(strAdmDate) || string.IsNullOrEmpty(strIssueDate) && string.IsNullOrEmpty(strAnimalid))
             {
                 showerror = true;
                 if (showerror)
@@ -32,7 +30,7 @@ namespace ah4cClientApp.Pages
                 }
                 return BadRequest();
             }
-            else if (!int.TryParse(strClientid, out int clientid) || !int.TryParse(strorderStatusId, out int orderstatusid) || !int.TryParse(strRoomid, out int roomid) || !int.TryParse(strWorkerid, out int workerid) || !int.TryParse(strAnimalid, out int animalid))
+            else if (!int.TryParse(strClientName, out int clientid) | !int.TryParse(strAnimalid, out int animalid))
             {
                 showerror=true;
                 if (showerror)
@@ -48,10 +46,8 @@ namespace ah4cClientApp.Pages
                 Order order = new Order();
                 order.ClientId = clientid;
                 order.RoomId = roomid;
-                order.WorkerId = workerid;
                 order.AdmissionDate = DateOnly.Parse(strAdmDate);
                 order.IssueDate = DateOnly.Parse(strIssueDate);
-                order.OrderStatusid = orderstatusid;
                 order.AnimalId = animalid;
                 var response = new HttpClient().PostAsJsonAsync(address + "orders/addneworder", order).Result;
                 if (response.IsSuccessStatusCode)

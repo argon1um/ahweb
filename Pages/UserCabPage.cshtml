@@ -19,48 +19,46 @@
 <div class="page">
     <div class="banner">
         <div class="banner-content">
-            <div class="banner-title"></div>
+            <div class="banner-title">Григорьев И. А.</div>
             <div class="banner-description">Информация о вашем аккаунте</div>
         </div>
 
     </div>
     <div class="mainsection">
         <div class="avatar">
-            <image class="cabinet-avatar" src="assets/medicinepet-10.png" />
+@*             @if (UserCabPageModel.user.ClientImage!= null)
+            {
+                <image class="cabinet-avatar" src="@AuthPageModel.client.ClientImage" />
+
+            }
+            else
+            { *@
+                <image class="cabinet-avatar" src="/assets/defaultimage.png"/>
+@*             } *@
         </div>
         <div class="container2">
-            <div class="page-maintitle" name="maintitlename">@UserCabPageModel.user.ClientName </div>
             <div class="selection">
-                <div class="label-normal">
-                    <div class="label-text">@UserCabPageModel.user.ClientLogin</div>
-                </div>
+                    <h5 class="label-text">Логин:</h5>
+                    <div class="label-text">Григорьев16</div>
             </div>
-            <div class="selection">
+            <div class="usercab-userinformaion">
                 <div class="label-normal">
-                    <div class="label-text">@UserCabPageModel.user.ClientPassword</div>
+                    <h5 class=" label-text">Пароль:</h5>
+                    <input type="password" value="**********" /> 
+
                 </div>
                 <div class="primary">
                     <form method="post">
-                        <button class="title4">👁</button>
+                        <button >👁</button>
                     </form>
-                </div>
-            </div>
-            <div class="selection">
-                <div class="primary2">
-                    <form>
-                        <div class="title4">Сохранить</div>
+                    <form method="post">
+                        <button name="accoutbutton" class="usercab-button">Выйти из аккаунта</button>
                     </form>
                 </div>
             </div>
         </div>
         <div class="seconday">
-            <form method="post">
-                <button name="accoutbutton" class="usercab-button">Выйти из аккаунта</button>
-            </form>
-            <form>
-                <p></p>
-                <button class="usercab-button">Изменить фото</button>
-            </form>
+
         </div>
         <svg class="usercab-userinformaion"</svg>
     </div>

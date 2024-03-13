@@ -12,11 +12,17 @@ namespace ah4cClientApp.Pages
         private static JsonSerializerSettings mainsettings = new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
         public static string address = "http://localhost:8081";
         public static List<Room> rooms = new List<Room>();
+        public static int selectedRoomid;
         public void OnGet()
         {
-            var response = new HttpClient().GetStringAsync(address + "/rooms/allrooms").Result;
+            var response = new HttpClient().GetStringAsync(address + "/rooms/allfreerooms").Result;
             rooms = JsonConvert.DeserializeObject<List<Room>>(response);
 
+        }
+
+        public void OnPost()
+        {
+           
         }
     }
 }

@@ -55,21 +55,17 @@
         }
     </style>
 <form method="post">
-    <label for="clientId">ID клиента</label><br />
+    <label for="clientId">ФИО клиента</label><br />
     <input required name="clientId" /><br />
-    <label for="roomId">ID комнаты</label><br />
-    <input required name="roomId" /><br />
-    <label for="workerId">ID работника</label><br />
-    <input required name="workerId" /><br />
+    <label for="roomId">Номер комнаты</label><br />
+    <input required name="roomId"  /><br />
     <label for="issueDate">Дата принятия</label><br />
     <input type="date" required name="issueDate" /><br />
     <label for="admissionDate">Дата выселения</label><br />
     <input type="date" required name="admissionDate" /><br />
-    <label for="animalId">ID питомца</label><br />
-    <input name="animalId" /><br />
-    <label for="orderStatusId">Статус заявки</label><br />
-    <input name="orderStatusId" /><br />
-    <input type="submit" value="Добавить" />
+    <label for="animalId">Вид питомца</label><br />
+    <input name="animalId"/><br />
+    <input type="submit" value="Забронировать" />
     <div class="form-group" style="display:@isdisplay">
         <span style="color:red">@ViewData["customerror"]</span>
     </div>
@@ -77,7 +73,7 @@
         <span style="color:green">@ViewData["customsuccess"]</span>
     </div>
 </form>
-<form action="/About">
+<form action="/BookingPage">
     <input type="submit" value="Вернуться назад"/>
 </form>
 

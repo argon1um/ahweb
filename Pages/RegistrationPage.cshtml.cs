@@ -43,10 +43,12 @@ namespace ah4cClientApp.Pages
                     newclient.ClientEmail = clientemail;
                     newclient.ClientPhone = result;
 
-                    var response = new HttpClient().PostAsJsonAsync(address + "clients/reg", newclient).Result;
+                    var response = new HttpClient().PostAsJsonAsync(address + "clients/signUp", newclient).Result;
                     if (response.IsSuccessStatusCode)
                     {
-                        return RedirectToPage("Index");
+                        ViewData["showerror"] = "true";
+                        ViewData["customerror"] = "Успешная регистрация";
+                        return Page();
                     }
                     else
                     {

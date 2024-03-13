@@ -7,6 +7,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Identity.Client;
 using Newtonsoft.Json;
 using NuGet.Protocol;
 
@@ -14,10 +15,8 @@ namespace ah4cClientApp.Pages
 {
     public class AuthPageModel : PageModel
     {
-        public static string userforform;
-        public static string passwordforform;
         private readonly ILogger<IndexModel> _logger;
-
+        public static Client client;
         AuthService auth = new AuthService();
 
 
@@ -65,18 +64,15 @@ namespace ah4cClientApp.Pages
 
                 ClientDTO clientDTO = new ClientDTO(username, password);
                 var response = new HttpClient().PostAsJsonAsync(address + "clients/log", clientDTO).Result;
-                var client = JsonConvert.DeserializeObject(response.Content.ReadAsStringAsync().Result);
                 
-                
+
                 if (response.IsSuccessStatusCode)
                 {
                     IndexModel.check = true;
-                    return RedirectToPage("UserCabPage");
+                    return RedirectToPage("UserCabPage", client);
                 }
                 else
                 {
-                    
-
                     var showerror4 = true;
                     if (showerror4)
                     {
