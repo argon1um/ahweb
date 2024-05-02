@@ -18,6 +18,8 @@ namespace ah4cClientApp.Pages
             var response = new HttpClient().GetStringAsync(address + "/rooms/allfreerooms").Result;
             rooms = JsonConvert.DeserializeObject<List<Room>>(response);
 
+           
+
         }
 
         public void OnPost()
