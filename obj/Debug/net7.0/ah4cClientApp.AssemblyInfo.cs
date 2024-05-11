@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ah4cClientApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ea2c5e4cd6657df23d797a8897f3814183b8cd7b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a776b1b154aa780fe7e27c387ae13999203861d3")]
 [assembly: System.Reflection.AssemblyProductAttribute("ah4cClientApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ah4cClientApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

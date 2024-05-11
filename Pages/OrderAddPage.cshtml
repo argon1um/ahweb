@@ -1,6 +1,51 @@
 ﻿@page
+@using Newtonsoft.Json
 @model ah4cClientApp.Pages.OrderAddPageModel
 @{
+
+    int typeid = 1;
+    string address = "http://localhost:8081/";
+    async Task<IActionResult> GetBreeds(int typeid)
+    {
+        if (typeid == 1)
+        {
+            var catlist = await new HttpClient().GetAsync(address + "getCatBreeds");
+            var jsonString = await catlist.Content.ReadAsStringAsync();
+            var data = JsonConvert.DeserializeObject<List<Animalbreed>>(jsonString);
+            ViewData["AnimalBreeds"] = data;
+            foreach (var item in ViewData["AnimalBreeds"] as List<Animalbreed>)
+            {
+                <option for="animalbreeds" value="@item.AnimalbreedId">@item.AnimalbreedName</option>
+            }
+            <option value="add">Нет нужной породы</option>
+        }
+        if (typeid == 2)
+        {
+            var doglist = await new HttpClient().GetAsync(address + "getDogBreeds");
+            var jsonString = await doglist.Content.ReadAsStringAsync();
+            var data = JsonConvert.DeserializeObject<List<Animalbreed>>(jsonString);
+            ViewData["AnimalBreeds"] = data;
+            foreach (var item in ViewData["AnimalBreeds"] as List<Animalbreed>)
+            {
+                <option for="animalbreeds" value="@item.AnimalbreedId">@item.AnimalbreedName</option>
+            }
+            <option value="add">Нет нужной породы</option>
+        }
+        else
+        {
+            var breedlist = await new HttpClient().GetAsync(address + "getAllBreeds");
+            var jsonString = await breedlist.Content.ReadAsStringAsync();
+            var data = JsonConvert.DeserializeObject<List<Animalbreed>>(jsonString);
+            ViewData["AnimalBreeds"] = data;
+            foreach (var item in ViewData["AnimalBreeds"] as List<Animalbreed>)
+            {
+                <option for="animalbreeds" value="@item.AnimalbreedId">@item.AnimalbreedName</option>
+            }
+            <option value="add">Нет нужной породы</option>
+        }
+        return Page();
+    }
+
     var isdisplay = "none";
     if (ViewData["showerror"] != null && ViewData["showerror"] as string == "true")
     {
@@ -11,6 +56,26 @@
         isdisplay = "block";
     }
 }
+<script>
+
+    // Получаем ссылки на элементы
+    var select = document.getElementById("animalbreeds");
+    var textInputContainer = document.getElementById("animalBreedTXT");
+
+    // Обработчик события изменения выбора в списке
+    select.addEventListener("change", function () {
+        var selectedOption = select.value;
+
+        // Если выбрана опция "Добавить", показываем текстовое поле
+        if (selectedOption === "add") {
+            textInputContainer.style.display = "block";
+        } else {
+            // В противном случае скрываем текстовое поле
+            textInputContainer.style.display = "none";
+        }
+    });
+</script>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -57,6 +122,8 @@
 <form method="post">
     <label for="clientId">ФИО клиента</label><br />
     <input required name="clientId" /><br />
+    <label for="clientPhone">Номер телефона клиента</label><br />
+    <input required name="clientPhone" /><br />
     <label for="roomId">Номер комнаты</label><br />
     <input required name="roomId"  /><br />
     <label for="issueDate">Дата принятия</label><br />
@@ -64,7 +131,45 @@
     <label for="admissionDate">Дата выселения</label><br />
     <input type="date" required name="admissionDate" /><br />
     <label for="animalId">Вид питомца</label><br />
-    <input name="animalId"/><br />
+    <select formaction="GetBreeds" required name="animaltypes">
+        @foreach (var item in ViewData["AnimalTypes"] as List<Animaltype>)
+        {
+            <option value="@item.AnimaltypeId">@item.AnimaltypeName</option>
+        }
+    </select><br />
+    <label for="animalId">Порода питомца</label><br />
+    <select required id="animalbreeds">
+        @{
+        if (typeid == 1)
+        {
+        var catlist = await new HttpClient().GetAsync(address + "getCatBreeds");
+        var jsonString = await catlist.Content.ReadAsStringAsync();
+        var data = JsonConvert.DeserializeObject
+        <List<Animalbreed>>(jsonString);
+            ViewData["AnimalBreeds"] = data;
+
+
+        }
+        if (typeid == 2)
+        {
+            var doglist = await new HttpClient().GetAsync(address + "getDogBreeds");
+            var jsonString = await doglist.Content.ReadAsStringAsync();
+            var data = JsonConvert.DeserializeObject<List<Animalbreed>>(jsonString);
+            ViewData["AnimalBreeds"] = data;
+
+
+        }
+            foreach (var item in ViewData["AnimalBreeds"] as List<Animalbreed>)
+            {
+                <option for="animalbreeds" value="@item.AnimalbreedId">@item.AnimalbreedName</option>
+            }
+            <option value="add">Нет нужной породы</option>
+        }
+    </select><br/>
+    <input required id="animalBreedTXT" /><br />
+    <label for="animalId">Кличка питомца</label><br />
+    <input required name="animalId" /><br />
+
     <input type="submit" value="Забронировать" />
     <div class="form-group" style="display:@isdisplay">
         <span style="color:red">@ViewData["customerror"]</span>
