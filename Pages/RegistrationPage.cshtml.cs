@@ -17,11 +17,10 @@ namespace ah4cClientApp.Pages
         {
             var showerror = false;
             string clientname = Request.Form["clientname"];
-            string clientlogin = Request.Form["clientlogin"];
             string clientpassword = Request.Form["clientpassword"];
             string clientemail = Request.Form["clientemail"];
             string clientphone = Request.Form["clientphone"];
-            if (string.IsNullOrEmpty(clientname) || string.IsNullOrEmpty(clientlogin) || string.IsNullOrEmpty(clientpassword) || string.IsNullOrEmpty(clientemail) || string.IsNullOrEmpty(clientphone))
+            if (string.IsNullOrEmpty(clientname) || string.IsNullOrEmpty(clientpassword) || string.IsNullOrEmpty(clientemail) || string.IsNullOrEmpty(clientphone))
             {
                 showerror = true;
                 if (showerror)
@@ -38,9 +37,9 @@ namespace ah4cClientApp.Pages
                 {
                     ClientResponseLogin newclient = new ClientResponseLogin();
                     newclient.ClientName = clientname;
-                    newclient.ClientLogin = clientlogin;
                     newclient.ClientPassword = clientpassword;
                     newclient.ClientEmail = clientemail;
+                    newclient.ClientCountoforders = 0;
                     newclient.ClientPhone = result;
 
                     var response = new HttpClient().PostAsJsonAsync(address + "clients/signUp", newclient).Result;

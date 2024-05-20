@@ -15,17 +15,18 @@ namespace ah4cClientApp.Pages
 {
     public class AuthPageModel : PageModel
     {
+        public string address = "http://localhost:8081/";
         private readonly ILogger<IndexModel> _logger;
         public static Client client;
         AuthService auth = new AuthService();
 
 
-        public async Task<ActionResult> OnPost(string username, string password)
+        public IActionResult OnPost(string phone, string password)
         {
-            string address = "http://localhost:8081/";
-            username = Request.Form["username"];
+            
+            phone = Request.Form["username"];
             password = Request.Form["password"];
-            string result = auth.AuthCheck(username, password);
+            string result = auth.AuthCheck(phone, password);
             if (result == "LoginCheckFault")
             {
                 var showerror = true;
@@ -62,14 +63,15 @@ namespace ah4cClientApp.Pages
             else
             {
 
-                ClientDTO clientDTO = new ClientDTO(username, password);
-                var response = new HttpClient().PostAsJsonAsync(address + "clients/log", clientDTO).Result;
+
+                var User = new UserAuthDTO(phone, password);
+                var response = new HttpClient().PostAsJsonAsync("http://localhost:8081/clients/auth", User).Result;
                 
 
                 if (response.IsSuccessStatusCode)
                 {
                     IndexModel.check = true;
-                    return RedirectToPage("UserCabPage", client);
+                    return RedirectToPage("UserCabPage");
                 }
                 else
                 {

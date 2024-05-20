@@ -11,19 +11,30 @@ namespace ah4cClientApp.Pages
 {
     public class OrderAddPageModel : PageModel
     {
+        public string animalType;
         public List<Service> servicesList;
         public List<Animaltype> animalTypes;
         private static JsonSerializerSettings mainsettings = new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
         public static string address = "http://localhost:8081/";
+         
         public IActionResult OnPost(int roomid)
         {
             var showerror = false;
             string strClientName = Request.Form["clientName"];
+            string strClientPhone = Request.Form["clientPhone"];
             string strRoomid = Request.Form["roomId"];
-            string strAdmDate = Request.Form["admissionDate"];
-            string strAnimalid = Request.Form["animalId"];
             string strIssueDate = Request.Form["issueDate"];
-            if (string.IsNullOrEmpty(strClientName) || string.IsNullOrEmpty(strRoomid) || string.IsNullOrEmpty(strAdmDate) || string.IsNullOrEmpty(strIssueDate) && string.IsNullOrEmpty(strAnimalid))
+            string strAdmDate = Request.Form["admissionDate"];
+            string animalType = Request.Form["animaltypes"];
+            string animalBreed = Request.Form["animalBreed"];
+            string animalName = Request.Form["animalName"];
+            string animalAge = Request.Form["animalAge"];
+            string animalWeight = Request.Form["animalWeight"];
+            string animalHeight = Request.Form["animalHeight"];
+            string acceptrules = Request.Form["acceptrules"];
+            string gen = Request.Form["gens"];
+            if (string.IsNullOrEmpty(strClientName) || string.IsNullOrEmpty(strClientPhone) || string.IsNullOrEmpty(strRoomid) || string.IsNullOrEmpty(strAdmDate) || string.IsNullOrEmpty(strIssueDate) && string.IsNullOrEmpty(animalType) || string.IsNullOrEmpty(animalBreed)
+                || string.IsNullOrEmpty(animalName) || string.IsNullOrEmpty(animalAge) || string.IsNullOrEmpty(animalWeight) || string.IsNullOrEmpty(animalHeight) || string.IsNullOrEmpty(gen))
             {
                 showerror = true;
                 if (showerror)
@@ -34,50 +45,67 @@ namespace ah4cClientApp.Pages
                 }
                 return BadRequest();
             }
-            else if (!int.TryParse(strClientName, out int clientid) | !int.TryParse(strAnimalid, out int animalid))
-            {
-                showerror = true;
-                if (showerror)
-                {
-                    ViewData["showerror"] = "true";
-                    ViewData["customerror"] = "ID не могут быть не числами";
-                    return Page();
-                }
-                return BadRequest();
-            }
             else
             {
-                Order order = new Order();
-                order.ClientId = clientid;
-                order.RoomId = roomid;
-                order.AdmissionDate = DateOnly.Parse(strAdmDate);
-                order.IssueDate = DateOnly.Parse(strIssueDate);
-                order.AnimalId = animalid;
-                var response = new HttpClient().PostAsJsonAsync(address + "orders/addneworder", order).Result;
-                if (response.IsSuccessStatusCode)
+                if (acceptrules == null)
                 {
                     var showsuccess = true;
                     if (showsuccess)
                     {
                         ViewData["showsuccess"] = "true";
-                        ViewData["customsuccess"] = "Заявка добавлена";
-                        return Page();
-
-                    }
-                }
-                else
-                {
-                    showerror = true;
-                    if (showerror)
-                    {
-                        ViewData["showerror"] = "true";
-                        ViewData["customerror"] = "Дата принятия не может быть позже даты выселения";
-                        return Page();
+                        ViewData["customsuccess"] = "Вы не приняли пользовательское соглашение";
+                        return BadRequest();
                     }
                     return BadRequest();
                 }
+                else
+                {
+                    if (DateOnly.Parse(strAdmDate) > DateOnly.Parse(strIssueDate))
+                    {
+                        showerror = true;
+                        if (showerror)
+                        {
+                            ViewData["showerror"] = "true";
+                            ViewData["customerror"] = "Дата принятия не может быть позже даты выселения";
+                            return Page();
+                        }
+                        return BadRequest();
+                    }
 
-                return BadRequest();
+                    OrderAddDTO order = new OrderAddDTO();
+                    order.orderNoteId = 0;
+                    order.orderId = 0;
+                    order.admDate = DateOnly.Parse(strAdmDate);
+                    order.issueDate = DateOnly.Parse(strIssueDate);
+                    order.clientPhone = decimal.Parse(strClientPhone);
+                    order.clientName = strClientName;
+                    order.roomId = roomid;
+                    order.animalType = animalType;
+                    order.animalName = animalName;
+                    order.animalAge = int.Parse(animalAge);
+                    order.animalWeight = int.Parse(animalWeight);
+                    order.animalHeight = int.Parse(animalHeight);
+                    order.animalGen = gen;
+                    var response = new HttpClient().PostAsJsonAsync(address + "/orders/addneworder", JsonConvert.SerializeObject(order)).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var showsuccess = true;
+                        if (showsuccess)
+                        {
+                            ViewData["showsuccess"] = "true";
+                            ViewData["customsuccess"] = "Заявка добавлена";
+                            return Page();
+
+                        }
+                    }
+                    else
+                    {
+                        return BadRequest("Uncatched ex");
+                    }
+
+
+                    return BadRequest();
+                }
             }
         }
 
@@ -89,44 +117,9 @@ namespace ah4cClientApp.Pages
             if (typesResponse.IsSuccessStatusCode)
             {
                 var jsonString = await typesResponse.Content.ReadAsStringAsync();
-                var data = JsonConvert.DeserializeObject<List<Animaltype>>(jsonString);
+                var data = JsonConvert.DeserializeObject<List<Animaltype>>(jsonString, mainsettings);
                 ViewData["AnimalTypes"] = data;
             }
-            // Вернуть IActionResult, например, RedirectToPage или View
-            return Page();
-
-        }
-
-        public async Task<IActionResult> GetBreeds(int typeid)
-        {
-            var catlist = await new HttpClient().GetAsync(address + "getCatBreeds");
-            var doglist = await new HttpClient().GetAsync(address + "getDogBreeds");
-            var breedlist = await new HttpClient().GetAsync(address + "getAllBreeds");
-
-            if (breedlist.IsSuccessStatusCode)
-            {
-                if (typeid == 1)
-                {
-                    var jsonString = await catlist.Content.ReadAsStringAsync();
-                    var data = JsonConvert.DeserializeObject<List<Animaltype>>(jsonString);
-                    ViewData["AnimalBreeds"] = data;
-                }
-
-                if (typeid == 2)
-                {
-                    var jsonString = await doglist.Content.ReadAsStringAsync();
-                    var data = JsonConvert.DeserializeObject<List<Animaltype>>(jsonString);
-                    ViewData["AnimalBreeds"] = data;
-                }
-                else
-                {
-                    var jsonString = await breedlist.Content.ReadAsStringAsync();
-                    var data = JsonConvert.DeserializeObject<List<Animaltype>>(jsonString);
-                    ViewData["AnimalBreeds"] = data;
-                }
-
-            }
-
             return Page();
         }
     }

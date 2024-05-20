@@ -1,13 +1,13 @@
 ﻿namespace AnimalHouseRestAPI.ModelsDTO
 {
-    public class ClientDTO
+    public class UserAuthDTO
     { 
-        public string Login { get; set; }
+        public string Phone { get; set; }
         public string Password { get; set; }
 
-        public ClientDTO(string login, string password)
+        public UserAuthDTO(string phone, string password)
         {
-            Login = login;
+            Phone = phone;
             Password = password;
         }
     }

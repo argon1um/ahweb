@@ -2,48 +2,16 @@
 @using Newtonsoft.Json
 @model ah4cClientApp.Pages.OrderAddPageModel
 @{
-
-    int typeid = 1;
+    List<Animaltype> types = new List<Animaltype>();
     string address = "http://localhost:8081/";
-    async Task<IActionResult> GetBreeds(int typeid)
+    @if (ViewData["AnimalTypes"] != null)
     {
-        if (typeid == 1)
+        foreach (var item in ViewData["AnimalTypes"] as List<Animaltype>)
         {
-            var catlist = await new HttpClient().GetAsync(address + "getCatBreeds");
-            var jsonString = await catlist.Content.ReadAsStringAsync();
-            var data = JsonConvert.DeserializeObject<List<Animalbreed>>(jsonString);
-            ViewData["AnimalBreeds"] = data;
-            foreach (var item in ViewData["AnimalBreeds"] as List<Animalbreed>)
-            {
-                <option for="animalbreeds" value="@item.AnimalbreedId">@item.AnimalbreedName</option>
-            }
-            <option value="add">Нет нужной породы</option>
+            types.Add(item);
+            <br />
         }
-        if (typeid == 2)
-        {
-            var doglist = await new HttpClient().GetAsync(address + "getDogBreeds");
-            var jsonString = await doglist.Content.ReadAsStringAsync();
-            var data = JsonConvert.DeserializeObject<List<Animalbreed>>(jsonString);
-            ViewData["AnimalBreeds"] = data;
-            foreach (var item in ViewData["AnimalBreeds"] as List<Animalbreed>)
-            {
-                <option for="animalbreeds" value="@item.AnimalbreedId">@item.AnimalbreedName</option>
-            }
-            <option value="add">Нет нужной породы</option>
-        }
-        else
-        {
-            var breedlist = await new HttpClient().GetAsync(address + "getAllBreeds");
-            var jsonString = await breedlist.Content.ReadAsStringAsync();
-            var data = JsonConvert.DeserializeObject<List<Animalbreed>>(jsonString);
-            ViewData["AnimalBreeds"] = data;
-            foreach (var item in ViewData["AnimalBreeds"] as List<Animalbreed>)
-            {
-                <option for="animalbreeds" value="@item.AnimalbreedId">@item.AnimalbreedName</option>
-            }
-            <option value="add">Нет нужной породы</option>
-        }
-        return Page();
+        types = types;
     }
 
     var isdisplay = "none";
@@ -56,27 +24,29 @@
         isdisplay = "block";
     }
 }
-<script>
-
-    // Получаем ссылки на элементы
-    var select = document.getElementById("animalbreeds");
-    var textInputContainer = document.getElementById("animalBreedTXT");
-
-    // Обработчик события изменения выбора в списке
-    select.addEventListener("change", function () {
-        var selectedOption = select.value;
-
-        // Если выбрана опция "Добавить", показываем текстовое поле
-        if (selectedOption === "add") {
-            textInputContainer.style.display = "block";
-        } else {
-            // В противном случае скрываем текстовое поле
-            textInputContainer.style.display = "none";
-        }
-    });
-</script>
 
     <style>
+        .radio-container {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .radio-container input[type="radio"] {
+            display: none; /* Скрыть оригинальную радиокнопку */
+        }
+
+        .radio-container label {
+            display: inline-block;
+            cursor: pointer;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .radio-container input[type="radio"]:checked + label {
+            background-color: #007bff; /* Изменить цвет фона для выбранной радиокнопки */
+            color: #fff; /* Изменить цвет текста для выбранной радиокнопки */
+        }
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
@@ -120,57 +90,48 @@
         }
     </style>
 <form method="post">
-    <label for="clientId">ФИО клиента</label><br />
-    <input required name="clientId" /><br />
+    <label for="clientName">ФИО клиента</label><br />
+    <input required name="clientName" /><br />
     <label for="clientPhone">Номер телефона клиента</label><br />
     <input required name="clientPhone" /><br />
     <label for="roomId">Номер комнаты</label><br />
     <input required name="roomId"  /><br />
-    <label for="issueDate">Дата принятия</label><br />
-    <input type="date" required name="issueDate" /><br />
-    <label for="admissionDate">Дата выселения</label><br />
+    <label for="admissionDate">Дата принятия</label><br />
     <input type="date" required name="admissionDate" /><br />
-    <label for="animalId">Вид питомца</label><br />
-    <select formaction="GetBreeds" required name="animaltypes">
-        @foreach (var item in ViewData["AnimalTypes"] as List<Animaltype>)
+    <label for="issueDate">Дата выселения</label><br />
+    <input type="date" required name="issueDate" /><br />
+    <label for="animalType">Вид питомца</label><br />
+    <div class="radio-container">
+        @if (types != null)
         {
-            <option value="@item.AnimaltypeId">@item.AnimaltypeName</option>
-        }
-    </select><br />
-    <label for="animalId">Порода питомца</label><br />
-    <select required id="animalbreeds">
-        @{
-        if (typeid == 1)
-        {
-        var catlist = await new HttpClient().GetAsync(address + "getCatBreeds");
-        var jsonString = await catlist.Content.ReadAsStringAsync();
-        var data = JsonConvert.DeserializeObject
-        <List<Animalbreed>>(jsonString);
-            ViewData["AnimalBreeds"] = data;
-
-
-        }
-        if (typeid == 2)
-        {
-            var doglist = await new HttpClient().GetAsync(address + "getDogBreeds");
-            var jsonString = await doglist.Content.ReadAsStringAsync();
-            var data = JsonConvert.DeserializeObject<List<Animalbreed>>(jsonString);
-            ViewData["AnimalBreeds"] = data;
-
-
-        }
-            foreach (var item in ViewData["AnimalBreeds"] as List<Animalbreed>)
+            foreach (var item in types)
             {
-                <option for="animalbreeds" value="@item.AnimalbreedId">@item.AnimalbreedName</option>
+                <input type="radio" id="@("typeRadio_" + item.AnimaltypeId)" name="animaltypes" required value="@item.AnimaltypeName">
+                <label for="@("typeRadio_" + item.AnimaltypeId)">@item.AnimaltypeName</label>
+                <br />
             }
-            <option value="add">Нет нужной породы</option>
         }
-    </select><br/>
-    <input required id="animalBreedTXT" /><br />
-    <label for="animalId">Кличка питомца</label><br />
-    <input required name="animalId" /><br />
-
-    <input type="submit" value="Забронировать" />
+    </div>
+    <label for="animalBreed">Порода питомца</label><br />
+    <input type="text" required name="animalBreed" /><br />
+    <label for="animalName">Кличка питомца</label><br />
+    <input required name="animalName" /><br />
+    <label for="animalAge">Возраст питомца</label><br />
+    <input required name="animalAge" /><br />
+    <label for="animalWeight">Вес питомца</label><br />
+    <input required name="animalWeight" /><br />
+    <label for="animalHeight">Рост питомца</label><br />
+    <input required name="animalHeight" /><br />
+    <label for="gens">Пол питомца</label><br />
+    <div class="radio-container">
+        <input type="radio" id="radioM" name="gens" value="М">
+        <label for="radioM">М</label>
+        <input type="radio" id="radioW" name="gens" value="Ж">
+        <label for="radioW">Ж</label>
+    </div>
+    <input type="checkbox" name="acceptrules"/>
+    <label for="acceptrules">Я даю согласие на обработку моих персональных данных</label>
+    <input type="submit" value="Оплатить и забронировать" />
     <div class="form-group" style="display:@isdisplay">
         <span style="color:red">@ViewData["customerror"]</span>
     </div>
