@@ -11,6 +11,7 @@ namespace ah4cClientApp.Pages
 {
     public class OrderAddPageModel : PageModel
     {
+        public string roomId;
         public string animalType;
         public List<Service> servicesList;
         public List<Animaltype> animalTypes;
@@ -18,6 +19,7 @@ namespace ah4cClientApp.Pages
         public static string address = "http://localhost:8081/";
          
         public IActionResult OnPost(int roomid)
+
         {
             var showerror = false;
             string strClientName = Request.Form["clientName"];
@@ -40,7 +42,7 @@ namespace ah4cClientApp.Pages
                 if (showerror)
                 {
                     ViewData["showerror"] = "true";
-                    ViewData["customerror"] = "Заполните все поля";
+                    ViewData["customerror"] = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ";
                     return Page();
                 }
                 return BadRequest();
@@ -53,7 +55,7 @@ namespace ah4cClientApp.Pages
                     if (showsuccess)
                     {
                         ViewData["showsuccess"] = "true";
-                        ViewData["customsuccess"] = "Вы не приняли пользовательское соглашение";
+                        ViewData["customsuccess"] = "пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ";
                         return BadRequest();
                     }
                     return BadRequest();
@@ -66,7 +68,7 @@ namespace ah4cClientApp.Pages
                         if (showerror)
                         {
                             ViewData["showerror"] = "true";
-                            ViewData["customerror"] = "Дата принятия не может быть позже даты выселения";
+                            ViewData["customerror"] = "пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ";
                             return Page();
                         }
                         return BadRequest();
@@ -85,15 +87,16 @@ namespace ah4cClientApp.Pages
                     order.animalAge = int.Parse(animalAge);
                     order.animalWeight = int.Parse(animalWeight);
                     order.animalHeight = int.Parse(animalHeight);
+                    order.animalBreed = "123";
                     order.animalGen = gen;
-                    var response = new HttpClient().PostAsJsonAsync(address + "/orders/addneworder", JsonConvert.SerializeObject(order)).Result;
+                    var response = new HttpClient().PostAsJsonAsync(address + "orders/addneworder", order).Result;
                     if (response.IsSuccessStatusCode)
                     {
                         var showsuccess = true;
                         if (showsuccess)
                         {
                             ViewData["showsuccess"] = "true";
-                            ViewData["customsuccess"] = "Заявка добавлена";
+                            ViewData["customsuccess"] = "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ";
                             return Page();
 
                         }
@@ -113,7 +116,7 @@ namespace ah4cClientApp.Pages
         {
             
             var typesResponse = await new HttpClient().GetAsync(address + "getAnimalTypes");
-
+            roomId = Request.Query["roomId"];
             if (typesResponse.IsSuccessStatusCode)
             {
                 var jsonString = await typesResponse.Content.ReadAsStringAsync();

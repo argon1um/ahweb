@@ -17,7 +17,7 @@ namespace ah4cClientApp.Pages
     {
         public string address = "http://localhost:8081/";
         private readonly ILogger<IndexModel> _logger;
-        public static Client client;
+        public static ClientResponseLogin client;
         AuthService auth = new AuthService();
 
 
@@ -33,7 +33,7 @@ namespace ah4cClientApp.Pages
                 if (showerror)
                 {
                     ViewData["showerror"] = "true";
-                    ViewData["customerror"] = "Логин не может быть пустым!";
+                    ViewData["customerror"] = "Г‹Г®ГЈГЁГ­ Г­ГҐ Г¬Г®Г¦ГҐГІ ГЎГ»ГІГј ГЇГіГ±ГІГ»Г¬!";
                     return Page();
                 }
                 return RedirectToPage("./AuthPage");
@@ -44,7 +44,7 @@ namespace ah4cClientApp.Pages
                 if (showerror2)
                 {
                     ViewData["showerror"] = "true";
-                    ViewData["customerror"] = "Пароль не может быть пустым!";
+                    ViewData["customerror"] = "ГЏГ Г°Г®Г«Гј Г­ГҐ Г¬Г®Г¦ГҐГІ ГЎГ»ГІГј ГЇГіГ±ГІГ»Г¬!";
                     return Page();
                 }
                 return RedirectToPage("./AuthPage");
@@ -55,7 +55,7 @@ namespace ah4cClientApp.Pages
                 if (showerror3)
                 {
                     ViewData["showerror"] = "true";
-                    ViewData["customerror"] = "Заполните все поля!";
+                    ViewData["customerror"] = "Г‡Г ГЇГ®Г«Г­ГЁГІГҐ ГўГ±ГҐ ГЇГ®Г«Гї!";
                     return Page();
                 }
                 return RedirectToPage("./AuthPage");
@@ -71,6 +71,7 @@ namespace ah4cClientApp.Pages
                 if (response.IsSuccessStatusCode)
                 {
                     IndexModel.check = true;
+                    client = JsonConvert.DeserializeObject<ClientResponseLogin>(response.Content.ReadAsStringAsync().Result);
                     return RedirectToPage("UserCabPage");
                 }
                 else
@@ -79,7 +80,7 @@ namespace ah4cClientApp.Pages
                     if (showerror4)
                     {
                         ViewData["showerror"] = "true";
-                        ViewData["customerror"] = "Неверный логин или пароль!";
+                        ViewData["customerror"] = "ГЌГҐГўГҐГ°Г­Г»Г© Г«Г®ГЈГЁГ­ ГЁГ«ГЁ ГЇГ Г°Г®Г«Гј!";
                         return Page();
                     }
                     return RedirectToPage("./AuthPage");
