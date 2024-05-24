@@ -17,10 +17,54 @@ namespace ah4cClientApp.Pages
         public List<Animaltype> animalTypes;
         private static JsonSerializerSettings mainsettings = new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
         public static string address = "http://localhost:8081/";
-         
-        public IActionResult OnPost(int roomid)
 
+        public class AdditionalService
         {
+            public string Description { get; set; }
+            public decimal Price { get; set; }
+            public bool IsPerDay { get; set; }
+            public int Quantity { get; set; }
+        }
+
+        public class BookingViewModel
+        {
+            public List<AdditionalService> Services { get; set; }
+            public decimal TotalCost { get; set; }
+
+            public BookingViewModel()
+            {
+                Services = new List<AdditionalService>
+            {
+                new AdditionalService { Description = "Проживание в номере гостиницы без оказания доп услуг", Price = 200, IsPerDay = true },
+                new AdditionalService { Description = "Проживание в номере гостинцы с еждедневными прогулками с питомцем", Price =350, IsPerDay = true },
+                new AdditionalService { Description = "Постоянное медецинское наблюдение за питомцем", Price = 300, IsPerDay = true},
+                new AdditionalService { Description = "Фотосессия для вашего питомца", Price = 500, IsPerDay = false }
+            };
+            }
+        }
+
+        [BindProperty]
+        public BookingViewModel Booking { get; set; }
+
+        private decimal CalculateTotalCost()
+        {
+            decimal total = 0; // Базовая стоимость проживания
+            foreach (var service in Booking.Services)
+            {
+                total += service.Quantity * service.Price;
+            }
+            return total;
+        }
+
+        public IActionResult OnPostCalculate()
+        {
+            Booking.TotalCost = CalculateTotalCost();
+            return new JsonResult(new { success = true, totalCost = Booking.TotalCost });
+        }
+
+        public IActionResult OnPost(int roomid)
+        {
+            Booking.TotalCost = CalculateTotalCost();
             var showerror = false;
             string strClientName = Request.Form["clientName"];
             string strClientPhone = Request.Form["clientPhone"];
@@ -38,97 +82,58 @@ namespace ah4cClientApp.Pages
             if (string.IsNullOrEmpty(strClientName) || string.IsNullOrEmpty(strClientPhone) || string.IsNullOrEmpty(strRoomid) || string.IsNullOrEmpty(strAdmDate) || string.IsNullOrEmpty(strIssueDate) && string.IsNullOrEmpty(animalType) || string.IsNullOrEmpty(animalBreed)
                 || string.IsNullOrEmpty(animalName) || string.IsNullOrEmpty(animalAge) || string.IsNullOrEmpty(animalWeight) || string.IsNullOrEmpty(animalHeight) || string.IsNullOrEmpty(gen))
             {
-                showerror = true;
-                if (showerror)
-                {
-                    ViewData["showerror"] = "true";
-                    ViewData["customerror"] = "Заполните все поля";
-                    return Page();
-                }
-                return BadRequest();
+                return new JsonResult(new { success = false, message = "Заполните все поля" });
             }
-            else if (!decimal.TryParse(strClientPhone, out decimal clientphone)){
-                if (acceptrules == null)
-                {
-                    var showsuccess = true;
-                    if (showsuccess)
-                    {
-                        ViewData["showsuccess"] = "true";
-                        ViewData["customsuccess"] = "Номер телефона введён некорректно";
-                        return BadRequest();
-                    }
-                    return BadRequest();
-                }
-                return BadRequest();
+            else if (!decimal.TryParse(strClientPhone, out decimal clientphone))
+            {
+                return new JsonResult(new { success = false, message = "Номер телефона введён некорректно" });
             }
             else
             {
                 if (acceptrules == null)
                 {
-                    var showsuccess = true;
-                    if (showsuccess)
-                    {
-                        ViewData["showsuccess"] = "true";
-                        ViewData["customsuccess"] = "Вы не согласились с обработкой персональных данных";
-                        return BadRequest();
-                    }
-                    return BadRequest();
+                    return new JsonResult(new { success = false, message = "Вы не согласились с обработкой персональных данных" });
                 }
                 else
                 {
                     if (DateOnly.Parse(strAdmDate) > DateOnly.Parse(strIssueDate))
                     {
-                        showerror = true;
-                        if (showerror)
-                        {
-                            ViewData["showerror"] = "true";
-                            ViewData["customerror"] = "Дата принятия не может быть позже даты выселения";
-                            return Page();
-                        }
-                        return BadRequest();
+                        return new JsonResult(new { success = false, message = "Дата принятия не может быть позже даты выселения" });
                     }
 
-                    OrderAddDTO order = new OrderAddDTO();
-                    order.orderNoteId = 0;
-                    order.orderId = 0;
-                    order.admDate = DateOnly.Parse(strAdmDate);
-                    order.issueDate = DateOnly.Parse(strIssueDate);
-                    order.clientPhone = decimal.Parse(strClientPhone);
-                    order.clientName = strClientName;
-                    order.roomId = roomid;
-                    order.animalType = animalType;
-                    order.animalName = animalName;
-                    order.animalAge = int.Parse(animalAge);
-                    order.animalWeight = int.Parse(animalWeight)/1000;
-                    order.animalHeight = int.Parse(animalHeight)/100;
-                    order.animalBreed = animalBreed;
-                    order.animalGen = gen;
+                    OrderAddDTO order = new OrderAddDTO
+                    {
+                        orderNoteId = 0,
+                        orderId = 0,
+                        admDate = DateOnly.Parse(strAdmDate),
+                        issueDate = DateOnly.Parse(strIssueDate),
+                        clientPhone = decimal.Parse(strClientPhone),
+                        clientName = strClientName,
+                        roomId = roomid,
+                        animalType = animalType,
+                        animalName = animalName,
+                        animalAge = int.Parse(animalAge),
+                        animalWeight = int.Parse(animalWeight) / 1000,
+                        animalHeight = int.Parse(animalHeight) / 100,
+                        animalBreed = animalBreed,
+                        animalGen = gen
+                    };
                     var response = new HttpClient().PostAsJsonAsync(address + "orders/addneworder", order).Result;
                     if (response.IsSuccessStatusCode)
                     {
-                        var showsuccess = true;
-                        if (showsuccess)
-                        {
-                            ViewData["showsuccess"] = "true";
-                            ViewData["customsuccess"] = "Заявка добавлена";
-                            return Page();
-
-                        }
+                        return new JsonResult(new { success = true, message = "Заявка добавлена" });
                     }
                     else
                     {
-                        return BadRequest("Uncatched ex");
+                        return new JsonResult(new { success = false, message = "Произошла ошибка при добавлении заявки" });
                     }
-
-
-                    return BadRequest();
                 }
             }
         }
 
         public async Task<IActionResult> OnGet()
         {
-            
+            Booking = new BookingViewModel();
             var typesResponse = await new HttpClient().GetAsync(address + "getAnimalTypes");
             roomId = Request.Query["roomId"];
             if (typesResponse.IsSuccessStatusCode)

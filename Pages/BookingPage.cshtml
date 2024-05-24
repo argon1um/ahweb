@@ -2,8 +2,6 @@
 @using AnimalHouseRestAPI.Models
 @model ah4cClientApp.Pages.BookingPageModel
 @{
-    
-
 }
 <div class="banner">
     <div class="banner-content">
@@ -15,8 +13,11 @@
 
 </div>
 <h2 class="page-maintitle">Выберите нужные даты</h2>
-<input type="date" name="admissionDate" />
-<input type="date" name="issueDate"/>
+<form method="post">
+    <input type="date" name="admissionDate" value="admissionDate" asp-for="admissionDate">
+    <input type="date" name="issueDate" value="issueDate" asp-for="issueDate">
+    <button type="submit" onclick="this.form.submit()">Поиск</button>
+</form>
 <h2 class="page-maintitle">Свободные номера для питомцев</h2>
 <div class="card-oriientation">
     @foreach (Room room in BookingPageModel.rooms)
@@ -29,18 +30,15 @@
                         <a href=OrderAddPage?roomId=@room.RoomId>
                             @if (@room.RoomImage == "largeroom")
                             {
-
-                                <img src = "/assets/largeroom.jpg" />
+                                <img src="/assets/largeroom.jpg"/>
                             }
                             @if (@room.RoomImage == "mediumroom")
                             {
-
-                                <img src = "/assets/mediumroom.jpg" />
+                                <img src="/assets/mediumroom.jpg"/>
                             }
                             @if (@room.RoomImage == "smallroom")
                             {
-
-                                <img src="/assets/smallroom.jpg" />
+                                <img src="/assets/smallroom.jpg"/>
                             }
                         </a>
                     </div>
@@ -57,4 +55,3 @@
         </form>
     }
 </div>
-

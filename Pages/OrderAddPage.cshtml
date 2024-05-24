@@ -24,17 +24,19 @@
         isdisplay = "block";
     }
 }
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <style>
-    .checkboxright{
+<style>
+    .checkboxright {
         display: flex;
         flex-direction: row;
         font-size: 14px;
     }
-        .radio-container {
-            display: block;
-            margin-bottom: 10px;
-        }
+
+    .radio-container {
+        display: block;
+        margin-bottom: 10px;
+    }
 
         .radio-container input[type="radio"] {
             display: none; /* Скрыть оригинальную радиокнопку */
@@ -52,49 +54,84 @@
             background-color: #007bff; /* Изменить цвет фона для выбранной радиокнопки */
             color: #fff; /* Изменить цвет текста для выбранной радиокнопки */
         }
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
 
-        h1 {
-            text-align: center;
-            color: #333;
-        }
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
 
-        form {
-            margin: 20px auto;
-            width: 50%;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
+    h1 {
+        text-align: center;
+        color: #333;
+    }
 
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #666;
-        }
+    form {
+        margin: 20px auto;
+        width: 50%;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
 
-        input, select, button {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
+    label {
+        display: block;
+        margin-bottom: 5px;
+        color: #666;
+    }
 
-        button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-    </style>
-<form method="post">
+    input, select, button {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    button {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+</style>
+
+<form id="bookingForm" method="post">
+    <table>
+        <thead>
+            <tr>
+                <th>Количество</th>
+                <th>Цена</th>
+                <th>Описание</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Booking.Services.Count; i++)
+            {
+                <tr>
+                    <td>
+                        <input type="number" asp-for="Booking.Services[i].Quantity" class="form-control" min="0" />
+                    </td>
+                    <td>
+                        @Model.Booking.Services[i].Price @if (Model.Booking.Services[i].IsPerDay)
+                        {
+                            @Html.Raw("в день")
+                        }
+                    </td>
+                    <td>@Model.Booking.Services[i].Description</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <button type="button" class="btn btn-primary" id="calculateButton">Рассчитать</button>
+</form>
+
+<h3>Итоговая стоимость: <span id="totalCost">@Model.Booking.TotalCost</span> ₽</h3>
+
+<form id="orderForm" method="post">
+
     <label for="clientName">ФИО клиента</label><br />
     @if (AuthPageModel.client != null)
     {
@@ -107,13 +144,10 @@
         <input required name="clientName" />
         <label for="clientPhone">Номер телефона клиента</label>
         <input required name="clientPhone" />
-
         <br />
     }
-    
-    
     <label for="roomId">Номер комнаты</label><br />
-    <input required name="roomId" value="@Model.roomId"  /><br />
+    <input required name="roomId" value="@Model.roomId" /><br />
     <label for="admissionDate">Дата принятия</label><br />
     <input type="date" required name="admissionDate" /><br />
     <label for="issueDate">Дата выселения</label><br />
@@ -149,18 +183,62 @@
     </div>
     <div class="checkboxright">
         <a href="https://litepms.ru/widget/opd?id=284" for="acceptrules">Я даю согласие на обработку моих персональных данных</a>
-
-        <input type="checkbox" size="5" name="acceptrules"/>
+        <input type="checkbox" size="5" name="acceptrules" />
     </div>
-    <input type="submit" value="Оплатить и забронировать" />
-    <div class="form-group" style="display:@isdisplay">
-        <span style="color:red">@ViewData["customerror"]</span>
-    </div>
-    <div class="form-group" style="display:@isdisplay">
-        <span style="color:green">@ViewData["customsuccess"]</span>
-    </div>
+    <input type="button" id="submitOrderButton" value="Оплатить и забронировать" />
+    <div class="form-group" id="errorMessage" style="display:none; color:red;"></div>
+    <div class="form-group" id="successMessage" style="display:none; color:green;"></div>
 </form>
 <form action="/BookingPage">
-    <input type="submit" value="Вернуться назад"/>
+    <input type="submit" value="Вернуться назад" />
 </form>
 
+<script>
+    $(document).ready(function () {
+        // Добавляем обработчик события изменения полей ввода
+        $('#bookingForm input[type="number"]').change(function () {
+            // Пересчитываем общую сумму при изменении поля ввода
+            calculateTotalCost();
+        });
+
+        // Функция для пересчета общей суммы
+        function calculateTotalCost() {
+            var totalCost = 0;
+            $('#bookingForm input[type="number"]').each(function () {
+                var quantity = parseInt($(this).val());
+                var price = parseFloat($(this).closest('tr').find('.price').text());
+                if (!isNaN(quantity) && !isNaN(price)) {
+                    totalCost += quantity * price;
+                }
+            });
+            // Обновляем отображаемую сумму на странице
+            $('#totalCost').text(totalCost.toFixed(2));
+        }
+
+        // Вызываем функцию пересчета общей суммы при загрузке страницы
+        calculateTotalCost();
+    });
+
+
+        $('#submitOrderButton').click(function () {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Page("/OrderAddPage")',
+                data: $('#orderForm').serialize(),
+                success: function (result) {
+                    if (result.success) {
+                        $('#successMessage').text(result.message).show();
+                        $('#errorMessage').hide();
+                    } else {
+                        $('#errorMessage').text(result.message).show();
+                        $('#successMessage').hide();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    $('#errorMessage').text("Произошла ошибка при обработке запроса.").show();
+                    $('#successMessage').hide();
+                }
+            });
+        });
+    });
+</script>

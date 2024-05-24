@@ -6,25 +6,26 @@ using Newtonsoft.Json;
 
 namespace ah4cClientApp.Pages
 {
-    
     public class BookingPageModel : PageModel
     {
         private static JsonSerializerSettings mainsettings = new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
         public static string address = "http://localhost:8081";
         public static List<Room> rooms = new List<Room>();
         public static int selectedRoomid;
+        public DateOnly admissionDate;
+        public DateOnly issueDate;
+
         public void OnGet()
         {
-            var response = new HttpClient().GetStringAsync(address + "/rooms/allfreerooms").Result;
+            var response = new HttpClient().GetStringAsync(address + $"/rooms/checkAvailible?admDate={admissionDate}&issueDate={issueDate}").Result;
             rooms = JsonConvert.DeserializeObject<List<Room>>(response);
-
-           
-
         }
 
-        public void OnPost()
+
+        public void OnPost(DateOnly admissionDate, DateOnly issueDate)
         {
-           
+            var response = new HttpClient().GetStringAsync(address + $"/rooms/checkAvailible?admDate={admissionDate.ToString("yyyy-MM-dd")}&issueDate={issueDate.ToString("yyyy-MM-dd")}").Result;
+            rooms = JsonConvert.DeserializeObject<List<Room>>(response);
         }
     }
 }
