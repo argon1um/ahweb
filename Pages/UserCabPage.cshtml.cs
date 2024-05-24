@@ -19,7 +19,7 @@ namespace ah4cClientApp.Pages
                 return Redirect("/");
 
             Orders = new HttpClient().GetFromJsonAsync<List<OrderGetDTO>>("http://localhost:8081/orders/orderslist").Result.Where(x => x.ClientPhone == user.ClientPhone).ToList();
-            return new OkResult();
+            return Page();
         }
 
         public IActionResult OnPost()

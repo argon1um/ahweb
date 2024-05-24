@@ -33,7 +33,7 @@ namespace ah4cClientApp.Pages
                 if (showerror)
                 {
                     ViewData["showerror"] = "true";
-                    ViewData["customerror"] = "Ëîãèí íå ìîæåò áûòü ïóñòûì!";
+                    ViewData["customerror"] = "Логин не может быть пустым!";
                     return Page();
                 }
                 return RedirectToPage("./AuthPage");
@@ -44,7 +44,7 @@ namespace ah4cClientApp.Pages
                 if (showerror2)
                 {
                     ViewData["showerror"] = "true";
-                    ViewData["customerror"] = "Ïàðîëü íå ìîæåò áûòü ïóñòûì!";
+                    ViewData["customerror"] = "Пароль не может быть пустым!";
                     return Page();
                 }
                 return RedirectToPage("./AuthPage");
@@ -55,7 +55,7 @@ namespace ah4cClientApp.Pages
                 if (showerror3)
                 {
                     ViewData["showerror"] = "true";
-                    ViewData["customerror"] = "Çàïîëíèòå âñå ïîëÿ!";
+                    ViewData["customerror"] = "Заполните все поля!";
                     return Page();
                 }
                 return RedirectToPage("./AuthPage");
@@ -80,7 +80,7 @@ namespace ah4cClientApp.Pages
                     if (showerror4)
                     {
                         ViewData["showerror"] = "true";
-                        ViewData["customerror"] = "Íåâåðíûé ëîãèí èëè ïàðîëü!";
+                        ViewData["customerror"] = "Неверный логин или пароль!";
                         return Page();
                     }
                     return RedirectToPage("./AuthPage");

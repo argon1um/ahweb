@@ -42,8 +42,22 @@ namespace ah4cClientApp.Pages
                 if (showerror)
                 {
                     ViewData["showerror"] = "true";
-                    ViewData["customerror"] = "��������� ��� ����";
+                    ViewData["customerror"] = "Заполните все поля";
                     return Page();
+                }
+                return BadRequest();
+            }
+            else if (!decimal.TryParse(strClientPhone, out decimal clientphone)){
+                if (acceptrules == null)
+                {
+                    var showsuccess = true;
+                    if (showsuccess)
+                    {
+                        ViewData["showsuccess"] = "true";
+                        ViewData["customsuccess"] = "Номер телефона введён некорректно";
+                        return BadRequest();
+                    }
+                    return BadRequest();
                 }
                 return BadRequest();
             }
@@ -55,7 +69,7 @@ namespace ah4cClientApp.Pages
                     if (showsuccess)
                     {
                         ViewData["showsuccess"] = "true";
-                        ViewData["customsuccess"] = "�� �� ������� ���������������� ����������";
+                        ViewData["customsuccess"] = "Вы не согласились с обработкой персональных данных";
                         return BadRequest();
                     }
                     return BadRequest();
@@ -68,7 +82,7 @@ namespace ah4cClientApp.Pages
                         if (showerror)
                         {
                             ViewData["showerror"] = "true";
-                            ViewData["customerror"] = "���� �������� �� ����� ���� ����� ���� ���������";
+                            ViewData["customerror"] = "Дата принятия не может быть позже даты выселения";
                             return Page();
                         }
                         return BadRequest();
@@ -85,9 +99,9 @@ namespace ah4cClientApp.Pages
                     order.animalType = animalType;
                     order.animalName = animalName;
                     order.animalAge = int.Parse(animalAge);
-                    order.animalWeight = int.Parse(animalWeight);
-                    order.animalHeight = int.Parse(animalHeight);
-                    order.animalBreed = "123";
+                    order.animalWeight = int.Parse(animalWeight)/1000;
+                    order.animalHeight = int.Parse(animalHeight)/100;
+                    order.animalBreed = animalBreed;
                     order.animalGen = gen;
                     var response = new HttpClient().PostAsJsonAsync(address + "orders/addneworder", order).Result;
                     if (response.IsSuccessStatusCode)
@@ -96,7 +110,7 @@ namespace ah4cClientApp.Pages
                         if (showsuccess)
                         {
                             ViewData["showsuccess"] = "true";
-                            ViewData["customsuccess"] = "������ ���������";
+                            ViewData["customsuccess"] = "Заявка добавлена";
                             return Page();
 
                         }
