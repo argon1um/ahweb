@@ -58,12 +58,12 @@
                             <div class="icon">💸</div>
                         </div>
                         <div class="frame-427318906">
-                            <div class="title6">Заявка</div>
+                            <div class="title6">Заявка @order.OrderId</div>
                         </div>
                         <div class="subtitle">Дата начала передержки: @order.IssueDate</div>
                         <div class="subtitle">Дата окончания передержки: @order.AdmissionDate</div>
                         <h6>Квитанция:</h6>
-                        <a href="/DownloadExcel"> Скачать</a>
+                        <a href="/DocGenerate/CreateDoc"> Скачать</a>
                         <svg class="vector-2003"
                              width="906"
                              height="2"
@@ -88,12 +88,12 @@
                                 <div class="icon">💸</div>
                             </div>
                             <div class="frame-427318906">
-                                <div class="title6">Квитанция</div>
+                                <div class="title6">Квитанция @order.OrderId</div>
                             </div>
                             <div class="subtitle">Дата начала передержки: @order.IssueDate</div>
                             <div class="subtitle">Дата окончания передержки: @order.AdmissionDate</div>
                             <h6>Квитанция:</h6>
-                            <a href="/DownloadExcel"> Скачать</a>
+                            <a href="/DocGenerate/CreateDoc?@order"> Скачать</a>
                             <svg class="vector-2005"
                                  width="924"
                                  height="2"
