@@ -14,9 +14,13 @@ namespace ah4cClientApp.Pages
         public static int selectedRoomid;
         public DateOnly admissionDate;
         public DateOnly issueDate;
+        public static DateOnly admissionDatefb;
+        public static DateOnly issueDatefb;
+
 
         public void OnGet()
         {
+            
             var response = new HttpClient().GetStringAsync(address + $"/rooms/checkAvailible?admDate={admissionDate}&issueDate={issueDate}").Result;
             rooms = JsonConvert.DeserializeObject<List<Room>>(response);
         }
@@ -24,6 +28,8 @@ namespace ah4cClientApp.Pages
 
         public void OnPost(DateOnly admissionDate, DateOnly issueDate)
         {
+            admissionDatefb = admissionDate;
+            issueDatefb = issueDate;
             var response = new HttpClient().GetStringAsync(address + $"/rooms/checkAvailible?admDate={admissionDate.ToString("yyyy-MM-dd")}&issueDate={issueDate.ToString("yyyy-MM-dd")}").Result;
             rooms = JsonConvert.DeserializeObject<List<Room>>(response);
         }

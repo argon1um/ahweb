@@ -112,7 +112,7 @@
             {
                 <tr>
                     <td>
-                        <input type="number" asp-for="Booking.Services[i].Quantity" class="form-control" min="0" />
+                        <input type="number" asp-for="Booking.Services[i].Quantity" class="form-control" min="0" data-price="@Model.Booking.Services[i].Price" />
                     </td>
                     <td>
                         @Model.Booking.Services[i].Price @if (Model.Booking.Services[i].IsPerDay)
@@ -149,9 +149,9 @@
     <label for="roomId">Номер комнаты</label><br />
     <input required name="roomId" value="@Model.roomId" /><br />
     <label for="admissionDate">Дата принятия</label><br />
-    <input type="date" required name="admissionDate" /><br />
+    <input type="date" required name="admissionDate" value="@BookingPageModel.admissionDatefb" readonly/><br />
     <label for="issueDate">Дата выселения</label><br />
-    <input type="date" required name="issueDate" /><br />
+    <input type="date" required name="issueDate" value="@BookingPageModel.issueDatefb" readonly/><br />
     <label for="animalType">Вид питомца</label><br />
     <div class="radio-container">
         @if (types != null)
@@ -217,28 +217,39 @@
 
         // Вызываем функцию пересчета общей суммы при загрузке страницы
         calculateTotalCost();
+
+        document.querySelector("#calculateButton").addEventListener('click', () => {
+
+            const items = 
+                Array.from(
+                    document.querySelectorAll('input.form-control')
+                ).map(el => ({ price: el.dataset.price, quantity: el.value }));
+
+            const price = items.reduce((prev, curr) => prev + curr.quantity * curr.price, 0)
+
+            document.querySelector("#totalCost").innerHTML = price.toFixed(2);
+        })
     });
 
 
-        $('#submitOrderButton').click(function () {
-            $.ajax({
-                type: 'POST',
-                url: '@Url.Page("/OrderAddPage")',
-                data: $('#orderForm').serialize(),
-                success: function (result) {
-                    if (result.success) {
-                        $('#successMessage').text(result.message).show();
-                        $('#errorMessage').hide();
-                    } else {
-                        $('#errorMessage').text(result.message).show();
-                        $('#successMessage').hide();
-                    }
-                },
-                error: function (xhr, status, error) {
-                    $('#errorMessage').text("Произошла ошибка при обработке запроса.").show();
+    $('#submitOrderButton').click(function () {
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Page("/OrderAddPage")',
+            data: $('#orderForm').serialize(),
+            success: function (result) {
+                if (result.success) {
+                    $('#successMessage').text(result.message).show();
+                    $('#errorMessage').hide();
+                } else {
+                    $('#errorMessage').text(result.message).show();
                     $('#successMessage').hide();
                 }
-            });
+            },
+            error: function (xhr, status, error) {
+                $('#errorMessage').text("Произошла ошибка при обработке запроса.").show();
+                $('#successMessage').hide();
+            }
         });
     });
 </script>

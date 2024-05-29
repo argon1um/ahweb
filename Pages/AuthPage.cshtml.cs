@@ -1,6 +1,7 @@
 using ah4cClientApp.DTO;
 using ah4cClientApp.Pages.Shared;
 using ah4cClientApp.Services;
+using AHRestAPI.ModelsDTO;
 using AnimalHouseRestAPI.Models;
 using AnimalHouseRestAPI.ModelsDTO;
 using AutoMapper;
@@ -18,6 +19,7 @@ namespace ah4cClientApp.Pages
         public string address = "http://localhost:8081/";
         private readonly ILogger<IndexModel> _logger;
         public static ClientResponseLogin client;
+        public static WorkerResponseDTO worker;
         AuthService auth = new AuthService();
 
 
@@ -72,6 +74,7 @@ namespace ah4cClientApp.Pages
                 {
                     IndexModel.check = true;
                     client = JsonConvert.DeserializeObject<ClientResponseLogin>(response.Content.ReadAsStringAsync().Result);
+                    worker = JsonConvert.DeserializeObject<WorkerResponseDTO>(response.Content.ReadAsStringAsync().Result);
                     return RedirectToPage("UserCabPage");
                 }
                 else

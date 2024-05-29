@@ -66,6 +66,7 @@ namespace ah4cClientApp.Pages
         {
             Booking.TotalCost = CalculateTotalCost();
             var showerror = false;
+            
             string strClientName = Request.Form["clientName"];
             string strClientPhone = Request.Form["clientPhone"];
             string strRoomid = Request.Form["roomId"];
@@ -133,6 +134,10 @@ namespace ah4cClientApp.Pages
 
         public async Task<IActionResult> OnGet()
         {
+            if (BookingPageModel.issueDatefb == DateOnly.MinValue|| BookingPageModel.admissionDatefb == DateOnly.MinValue)
+            {
+                return Redirect("BookingPage");
+            }
             Booking = new BookingViewModel();
             var typesResponse = await new HttpClient().GetAsync(address + "getAnimalTypes");
             roomId = Request.Query["roomId"];
