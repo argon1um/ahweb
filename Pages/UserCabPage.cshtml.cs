@@ -18,7 +18,6 @@ namespace ah4cClientApp.Pages
 
         public IActionResult OnGet()
         {
-
             if (user != null)
             {
                 Orders = new HttpClient().GetFromJsonAsync<List<OrderGetDTO>>("http://localhost:8081/orders/orderslist").Result.Where(x => x.ClientPhone == user.ClientPhone).ToList();
@@ -28,8 +27,12 @@ namespace ah4cClientApp.Pages
             {
                 return BadRequest();
             }
+        }
 
-
+        public IActionResult OnGetCreateDoc(int id)
+        {
+            var stream = new HttpClient().GetStreamAsync($"http://localhost:8081/orders/GenerateDoc?id={id}").Result;
+            return new FileStreamResult(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") { FileDownloadName = "Квитанция.xlsx" };
         }
 
         public IActionResult OnPost()

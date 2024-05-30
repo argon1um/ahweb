@@ -63,7 +63,7 @@
                         <div class="subtitle">Дата начала передержки: @order.IssueDate</div>
                         <div class="subtitle">Дата окончания передержки: @order.AdmissionDate</div>
                         <h6>Квитанция:</h6>
-                        <a href="/DocGenerate/CreateDoc"> Скачать</a>
+                        <a download="Квитанция.xlsx" asp-page-handler="CreateDoc" asp-route-id="@order.OrderId">Скачать</a>
                         <svg class="vector-2003"
                              width="906"
                              height="2"
@@ -93,7 +93,7 @@
                             <div class="subtitle">Дата начала передержки: @order.IssueDate</div>
                             <div class="subtitle">Дата окончания передержки: @order.AdmissionDate</div>
                             <h6>Квитанция:</h6>
-                            <a href="/DocGenerate/CreateDoc?@order"> Скачать</a>
+                            <a download="Квитанция.xlsx" asp-page-handler="CreateDoc" asp-route-id="@order.OrderId">Скачать</a>
                             <svg class="vector-2005"
                                  width="924"
                                  height="2"
